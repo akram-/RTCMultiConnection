@@ -54,7 +54,7 @@ require('rtcmulticonnection-server')(null, function(request, response, config, r
         }
 
         var matched = false;
-        ['/demos/', '/dev/', '/dist/', '/socket.io/', '/node_modules/canvas-designer/', '/admin/'].forEach(function(item) {
+        ['/hackaton/', '/dev/', '/dist/', '/socket.io/', '/node_modules/canvas-designer/', '/admin/'].forEach(function(item) {
             if (filename.indexOf(resolveURL(item)) !== -1) {
                 matched = true;
             }
@@ -95,12 +95,12 @@ require('rtcmulticonnection-server')(null, function(request, response, config, r
         try {
             stats = fs.lstatSync(filename);
 
-            if (filename.search(/demos/g) === -1 && filename.search(/admin/g) === -1 && stats.isDirectory() && config.homePage === '/demos/index.html') {
+            if (filename.search(/hackaton/g) === -1 && filename.search(/admin/g) === -1 && stats.isDirectory() && config.homePage === '/hackaton/index.html') {
                 if (response.redirect) {
-                    response.redirect('/demos/');
+                    response.redirect('/hackaton/');
                 } else {
                     response.writeHead(301, {
-                        'Location': '/demos/'
+                        'Location': '/hackaton/'
                     });
                 }
                 response.end();
@@ -121,22 +121,7 @@ require('rtcmulticonnection-server')(null, function(request, response, config, r
                     'Content-Type': 'text/html'
                 });
 
-                if (filename.indexOf(resolveURL('/demos/MultiRTC/')) !== -1) {
-                    filename = filename.replace(resolveURL('/demos/MultiRTC/'), '');
-                    filename += resolveURL('/demos/MultiRTC/index.html');
-                } else if (filename.indexOf(resolveURL('/admin/')) !== -1) {
-                    filename = filename.replace(resolveURL('/admin/'), '');
-                    filename += resolveURL('/admin/index.html');
-                } else if (filename.indexOf(resolveURL('/demos/dashboard/')) !== -1) {
-                    filename = filename.replace(resolveURL('/demos/dashboard/'), '');
-                    filename += resolveURL('/demos/dashboard/index.html');
-                } else if (filename.indexOf(resolveURL('/demos')) !== -1) {
-                    filename = filename.replace(resolveURL('/demos/'), '');
-                    filename = filename.replace(resolveURL('/demos'), '');
-                    filename += resolveURL('/demos/index.html');
-                } else {
-                    filename += resolveURL(config.homePage);
-                }
+                filename += resolveURL(config.homePage);
             }
         } catch (e) {
             pushLogs(root, 'statSync.isDirectory', e);
