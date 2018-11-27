@@ -17,43 +17,111 @@
 <script src="https://maxcdn.bootstrapcdn.com/bootstrap/3.3.6/js/bootstrap.min.js"></script>
 
 <style type="text/css">
-
+	.header {
+		height: 60px;
+		width: 100%;
+		background-color: #0054A6;
+		margin-bottom: 10px;
+	}
+	
+	.logo {
+		height: 60px;
+	}
+	
+	.center-block {
+		display: block;
+		margin-left: auto;
+		margin-right: auto;
+	}
+	
+	#videos-container {
+		width: 100%;
+		height: 300px;
+		background-color: yellow;
+		margin-bottom: 10px;
+	}
+	
+	#chat-container {
+		width: 100%;
+		height: 200px;
+		background-color: green;
+		margin-bottom: 10px;
+	}
 </style>
 
 </head>
 <body>
-  <section class="make-center">
+	<div class="header">
+		<div class="row">
+			<div class="col-xs-3"></div>
+			<div class="col-xs-3">
+				<img class="logo" src="../media/sponsor-a-child.png" />
+			</div>
+		</div>
+	</div>
+  <div class="center-block">
 	<div class="row">
+		<div class="col-xs-3"></div>
         <div class="col-xs-3">
 			<div class="input-group">
 				<input class="form-control" type="text" id="room-id" value="abcdef" autocorrect=off autocapitalize=off size=20>
 				<span class="input-group-btn">
-					<button class="btn btn-default" id="open-room">Open Room</button>
+					<button class="btn btn-default" id="join-room">Join Room</button>
 				</span>
 			</div>
 		</div>
 		<div class="col-xs-3">
-			<div class="input-group">
-				<p><button class="btn btn-default" id="join-room">Join Room</button>
-				<button class="btn btn-default" id="open-or-join-room">Auto Open Or Join Room</button>
+			<div class="input-group pull-right">
+				<p>
+					<button class="btn btn-default" id="open-room">Open Room</button>
+					<button class="btn btn-default" id="open-or-join-room">Auto Open Or Join Room</button>
 				</p>
+			</div>
+		</div>
+		<div class="col-xs-3"></div>
+	</div>
+	
+	<div class="row">
+		<div class="col-xs-3"></div>
+		<div class="col-xs-6">
+			<div id="videos-container">VIDEO CONTENT HERE</div>
+		</div>
+	</div>
+	
+	<div class="row">
+		<div class="col-xs-3"></div>
+		<div class="col-xs-6">
+			<div id="chat-container">
+				CHAT CONTENT HERE
+				<div id="file-container"></div>
+				<div class="chat-output"></div>
 			</div>
 		</div>
 	</div>
 	
-    <br><br>
-    <input type="text" id="input-text-chat" placeholder="Enter Text Chat" disabled>
-    <button class="btn" id="share-file" disabled>Share File</button>
-    <br><br>
-    <button class="btn" id="btn-leave-room" disabled>Leave /or close the room</button>
+		
+	<div class="row">  
+		<div class="col-xs-3"></div>	
+		<div class="col-xs-3">
+			<div class="input-group">
+				<input class="form-control" type="text" id="input-text-chat" placeholder="Enter Text Chat" disabled>
+				<span class="input-group-btn">
+					<button class="btn btn-default" id="send-text">Send</button>
+				</span>
+			</div>
+		</div>
+			<div class="col-xs-3">
+					<button class="btn" id="share-file" disabled>Share File</button>
 
-    <div id="room-urls" style="text-align: center;display: none;background: #F1EDED;margin: 15px -10px;border: 1px solid rgb(189, 189, 189);border-left: 0;border-right: 0;"></div>
+					<button class="btn" id="btn-leave-room" disabled>Leave /or close the room</button>
 
-    <div id="chat-container">
-        <div id="file-container"></div>
-        <div class="chat-output"></div>
-    </div>
-    <div id="videos-container"></div>
+					<div id="room-urls" style="text-align: center;display: none;background: #F1EDED;margin: 15px -10px;border: 1px solid rgb(189, 189, 189);border-left: 0;border-right: 0;"></div>
+				</div>
+			</div>
+		</div>
+
+		
+	</div>
   </section>
 
 <script src="/dist/RTCMultiConnection.min.js"></script>
