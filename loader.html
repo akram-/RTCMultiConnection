@@ -1,0 +1,307 @@
+<html>
+<head>
+<!-- Latest compiled and minified CSS -->
+<link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/bootstrap/3.3.6/css/bootstrap.min.css">
+<link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/bootstrap-select/1.6.2/css/bootstrap-select.min.css">
+<link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/flag-icon-css/0.8.2/css/flag-icon.min.css">
+
+
+<script src="https://cdnjs.cloudflare.com/ajax/libs/jquery/2.2.2/jquery.min.js"></script>
+<script src="https://cdnjs.cloudflare.com/ajax/libs/bootstrap-select/1.6.2/js/bootstrap-select.min.js" />
+<script src="https://maxcdn.bootstrapcdn.com/bootstrap/3.3.6/js/bootstrap.min.js"></script>
+
+
+
+<style type="text/css">
+
+section.wrapper {
+  padding: 40px 0;
+}
+section.wrapper.dark {
+  background: #313134;
+}
+
+div.spinner {
+  -moz-animation: rotate 10s infinite linear;
+  -webkit-animation: rotate 10s infinite linear;
+  animation: rotate 10s infinite linear;
+  position: relative;
+  display: block;
+  margin: auto;
+  width: 142px;
+  height: 142px;
+}
+div.spinner i {
+  -moz-animation: rotate 3s infinite cubic-bezier(0.09, 0.6, 0.8, 0.03);
+  -webkit-animation: rotate 3s infinite cubic-bezier(0.09, 0.6, 0.8, 0.03);
+  animation: rotate 3s infinite cubic-bezier(0.09, 0.6, 0.8, 0.03);
+  -moz-transform-origin: 50% 100% 0;
+  -webkit-transform-origin: 50% 100% 0;
+  transform-origin: 50% 100% 0;
+  position: absolute;
+  display: inline-block;
+  top: 50%;
+  left: 50%;
+  border: solid 6px transparent;
+  border-bottom: none;
+}
+div.spinner i:nth-child(1) {
+  -moz-animation-timing-function: cubic-bezier(0.09, 0.3, 0.12, 0.03);
+  -webkit-animation-timing-function: cubic-bezier(0.09, 0.3, 0.12, 0.03);
+  animation-timing-function: cubic-bezier(0.09, 0.3, 0.12, 0.03);
+  width: 44px;
+  height: 22px;
+  margin-top: -22px;
+  margin-left: -22px;
+  border-color: #2172b8;
+  border-top-left-radius: 36px;
+  border-top-right-radius: 36px;
+}
+div.spinner i:nth-child(2) {
+  -moz-animation-timing-function: cubic-bezier(0.09, 0.6, 0.24, 0.03);
+  -webkit-animation-timing-function: cubic-bezier(0.09, 0.6, 0.24, 0.03);
+  animation-timing-function: cubic-bezier(0.09, 0.6, 0.24, 0.03);
+  width: 58px;
+  height: 29px;
+  margin-top: -29px;
+  margin-left: -29px;
+  border-color: #18a39b;
+  border-top-left-radius: 42px;
+  border-top-right-radius: 42px;
+}
+div.spinner i:nth-child(3) {
+  -moz-animation-timing-function: cubic-bezier(0.09, 0.9, 0.36, 0.03);
+  -webkit-animation-timing-function: cubic-bezier(0.09, 0.9, 0.36, 0.03);
+  animation-timing-function: cubic-bezier(0.09, 0.9, 0.36, 0.03);
+  width: 72px;
+  height: 36px;
+  margin-top: -36px;
+  margin-left: -36px;
+  border-color: #82c545;
+  border-top-left-radius: 48px;
+  border-top-right-radius: 48px;
+}
+div.spinner i:nth-child(4) {
+  -moz-animation-timing-function: cubic-bezier(0.09, 1.2, 0.48, 0.03);
+  -webkit-animation-timing-function: cubic-bezier(0.09, 1.2, 0.48, 0.03);
+  animation-timing-function: cubic-bezier(0.09, 1.2, 0.48, 0.03);
+  width: 86px;
+  height: 43px;
+  margin-top: -43px;
+  margin-left: -43px;
+  border-color: #f8b739;
+  border-top-left-radius: 54px;
+  border-top-right-radius: 54px;
+}
+div.spinner i:nth-child(5) {
+  -moz-animation-timing-function: cubic-bezier(0.09, 1.5, 0.6, 0.03);
+  -webkit-animation-timing-function: cubic-bezier(0.09, 1.5, 0.6, 0.03);
+  animation-timing-function: cubic-bezier(0.09, 1.5, 0.6, 0.03);
+  width: 100px;
+  height: 50px;
+  margin-top: -50px;
+  margin-left: -50px;
+  border-color: #f06045;
+  border-top-left-radius: 60px;
+  border-top-right-radius: 60px;
+}
+div.spinner i:nth-child(6) {
+  -moz-animation-timing-function: cubic-bezier(0.09, 1.8, 0.72, 0.03);
+  -webkit-animation-timing-function: cubic-bezier(0.09, 1.8, 0.72, 0.03);
+  animation-timing-function: cubic-bezier(0.09, 1.8, 0.72, 0.03);
+  width: 114px;
+  height: 57px;
+  margin-top: -57px;
+  margin-left: -57px;
+  border-color: #ed2861;
+  border-top-left-radius: 66px;
+  border-top-right-radius: 66px;
+}
+div.spinner i:nth-child(7) {
+  -moz-animation-timing-function: cubic-bezier(0.09, 2.1, 0.84, 0.03);
+  -webkit-animation-timing-function: cubic-bezier(0.09, 2.1, 0.84, 0.03);
+  animation-timing-function: cubic-bezier(0.09, 2.1, 0.84, 0.03);
+  width: 128px;
+  height: 64px;
+  margin-top: -64px;
+  margin-left: -64px;
+  border-color: #c12680;
+  border-top-left-radius: 72px;
+  border-top-right-radius: 72px;
+}
+div.spinner i:nth-child(8) {
+  -moz-animation-timing-function: cubic-bezier(0.09, 2.4, 0.96, 0.03);
+  -webkit-animation-timing-function: cubic-bezier(0.09, 2.4, 0.96, 0.03);
+  animation-timing-function: cubic-bezier(0.09, 2.4, 0.96, 0.03);
+  width: 142px;
+  height: 71px;
+  margin-top: -71px;
+  margin-left: -71px;
+  border-color: #5d3191;
+  border-top-left-radius: 78px;
+  border-top-right-radius: 78px;
+}
+
+@-moz-keyframes rotate {
+  to {
+    -moz-transform: rotate(360deg);
+    transform: rotate(360deg);
+  }
+}
+@-webkit-keyframes rotate {
+  to {
+    -webkit-transform: rotate(360deg);
+    transform: rotate(360deg);
+  }
+}
+@keyframes rotate {
+  to {
+    -moz-transform: rotate(360deg);
+    -ms-transform: rotate(360deg);
+    -webkit-transform: rotate(360deg);
+    transform: rotate(360deg);
+  }
+}
+
+.connectingMessageWrapper {
+	text-align: center;
+}
+
+h1 {
+	font-family : Helvetica;
+	font-size : 18px;
+	font-style : normal;
+	font-variant : normal;
+	font-weight : 700;
+	line-height : 15.4px;
+}
+
+h3 {
+	font-family : "Helvetica Neue",
+	Helvetica,
+	Arial,
+	sans-serif;
+	font-size : 14px;
+	font-style : normal;
+	font-variant : normal;
+	font-weight : 700;
+	line-height : 15.4px;
+}
+p {
+	font-family : "Helvetica Neue",
+	Helvetica,
+	Arial,
+	sans-serif;
+	font-size : 14px;
+	font-style : normal;
+	font-variant : normal;
+	font-weight : 400;
+	line-height : 20px;
+}
+blockquote {
+	font-family : "Helvetica Neue",
+	Helvetica,
+	Arial,
+	sans-serif;
+	font-size : 21px;
+	font-style : normal;
+	font-variant : normal;
+	font-weight : 400;
+	line-height : 30px;
+}
+pre {
+	font-family : "Helvetica Neue",
+	Helvetica,
+	Arial,
+	sans-serif;
+	font-size : 13px;
+	font-style : normal;
+	font-variant : normal;
+	font-weight : 400;
+	line-height : 18.5714px;
+}
+
+#welcomeMessage h1 {
+    margin-top: 25px;
+    text-align: center;
+	-webkit-transition: opacity 3s ease-in-out;
+	-moz-transition: opacity 3s ease-in-out;
+	-ms-transition: opacity 3s ease-in-out;
+	-o-transition: opacity 3s ease-in-out;
+	opacity: 1;
+}
+
+</style>
+</head>
+<body>
+	
+	
+	<div id="loaders">
+		<section class="wrapper">
+			<div class="connectingMessageWrapper">
+			  <h1 id="helloMessage"></h1>
+			</div>
+		  <div class="spinner">
+			<i></i>
+			<i></i>
+			<i></i>
+			<i></i>
+			<i></i>
+			<i></i>
+			<i></i>
+		  </div>
+		  <div class="connectingMessageWrapper">
+			<h3 id="connectingMessage"></h3>
+		  </div>
+		</section>
+
+	</div>
+
+	<select class="selectpicker" data-width="fit">
+	  <option data-content='<span class="flag-icon flag-icon-us"></span> English'>English</option>
+	  <option  data-content='<span class="flag-icon flag-icon-mx"></span> Español'>Español</option>
+	  <option  data-content='<span class="flag-icon flag-icon-mx"></span> Español'>Español</option>
+	  <option  data-content='<span class="flag-icon flag-icon-mx"></span> Español'>Español</option>
+	  <option  data-content='<span class="flag-icon flag-icon-mx"></span> Español'>Español</option>
+	</select>
+	
+	<script type="text/javascript">
+		var language = window.navigator.userLanguage || window.navigator.language;
+		var welcomeMessage = "Connecting you to your Compassion Child"
+		
+		switch(language) {
+			case "en-US":
+			case "en":
+				welcomeMessage = "Connecting you to your Compassion Child"
+				break;
+			case "es":
+				welcomeMessage = "Conectándote con tu hijo compasivo"
+				break;
+			case "fr":
+				welcomeMessage = "Vous connecter à votre enfant de compassion"
+				break;
+		}
+		
+		document.getElementById("connectingMessage").innerHTML = welcomeMessage;
+		
+		var greetingsRunning = true;
+		
+		var greetings = ["Hello","Hola","Olá","হ্যালো","Здравствуйте","今日は","Halo","Guten Tag","Bonjour","السلام عليكم","您好","नमस्ते"];
+		
+		function setGreeting() {
+			var greeting = greetings[Math.floor(Math.random()*greetings.length)];
+			document.getElementById("helloMessage").innerHTML = greeting;
+			if (greetingsRunning) {
+				setTimeout(function() { setGreeting() }, 3000);
+			}
+		}
+		
+		setGreeting();
+		
+		$(function(){
+			$('.selectpicker').selectpicker();
+		});
+		
+	</script>
+</body>
+</html>
