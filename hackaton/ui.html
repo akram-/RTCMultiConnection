@@ -16,6 +16,9 @@
 <script src="https://cdnjs.cloudflare.com/ajax/libs/bootstrap-select/1.6.2/js/bootstrap-select.min.js" />
 <script src="https://maxcdn.bootstrapcdn.com/bootstrap/3.3.6/js/bootstrap.min.js"></script>
 
+<script src="../js/recorder.js"></script>
+<script src="../js/main.js"></script>
+
 <style type="text/css">
 	.header {
 		height: 60px;
@@ -110,13 +113,15 @@
 				</span>
 			</div>
 		</div>
-			<div class="col-xs-3">
-					<button class="btn" id="share-file" disabled>Share File</button>
-
-					<button class="btn" id="btn-leave-room" disabled>Leave /or close the room</button>
-
-					<div id="room-urls" style="text-align: center;display: none;background: #F1EDED;margin: 15px -10px;border: 1px solid rgb(189, 189, 189);border-left: 0;border-right: 0;"></div>
-				</div>
+			<div class="col-xs-1">
+				<button class="btn btn-block" id="record" onclick="toggleRecord();">Record</button>
+					
+			</div>
+			<div class="col-xs-2">
+				<button class="btn" id="share-file" disabled>Share File</button>
+				<button class="btn" id="btn-leave-room" disabled>Leave</button>
+				<div id="room-urls" style="text-align: center;display: none;background: #F1EDED;margin: 15px -10px;border: 1px solid rgb(189, 189, 189);border-left: 0;border-right: 0;"></div>
+			</div>
 			</div>
 		</div>
 
@@ -394,6 +399,21 @@ if (roomid && roomid.length) {
 
     disableInputButtons();
 }
+
+var isRecording = false;
+
+<!-- Recording Logic -->
+function toggleRecord() {
+	isRecording = !isRecording;
+	var recordButtonText = "";
+	if (isRecording) {
+		recordButtonText = "Stop"
+	} else {
+		recordButtonText = "Record"
+	}
+	document.getElementById('record').innerHTML = recordButtonText;
+}
+
 </script>
 
 </body>
