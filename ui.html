@@ -135,8 +135,9 @@
             <div class="col-xs-3"></div>
             <div class="col-xs-3">
                 <div class="input-group">
-                    
-                    <input style="margin-top:5px;" class="form-control" type="text" id="input-text-chat" placeholder="Enter Text Chat" disabled>
+
+                    <input style="margin-top:5px;" class="form-control" type="text" id="input-text-chat" placeholder="Enter Text Chat"
+                        disabled>
                     <span class="input-group-btn">
                         <button class="btn btn-default" id="send-text">Send</button>
                     </span>
@@ -159,7 +160,7 @@
     </div>
 
     <div class="row">
-        
+
         <a id="save" href="#">.</a>
     </div>
 
@@ -180,7 +181,7 @@
         AWS.config.credentials = new AWS.CognitoIdentityCredentials({ IdentityPoolId: 'us-east-1:66b3f699-b9bc-437c-8089-703a3a36f132' });
 
         var lambda = new AWS.Lambda({ region: AWS.config.region, apiVersion: '2015-03-31' });
-        var s3 = new AWS.S3({ apiVersion: '2006-03-01', params: { Bucket: 'table21-voice-uplaods' } });
+        var s3 = new AWS.S3({ apiVersion: '2006-03-01', params: { Bucket: 'table21-voice-uploads' } });
 
         function playSound(url) {
             var a = new Audio(url);
@@ -224,6 +225,20 @@
             });
         };
 
+        document.getElementById('send-text').onclick = function () { 
+            var value = document.getElementById('input-text-chat').value;
+            
+            console.log('sending-text', value)
+            // removing trailing/leading whitespace
+            value = value.replace(/^\s+|\s+$/g, '');
+            if (!value.length) return;
+
+            connection.send(value);
+
+            appendDIV(value);
+            document.getElementById('input-text-chat').value = '';
+        }
+
         document.getElementById('btn-leave-room').onclick = function () {
             this.disabled = true;
 
@@ -256,21 +271,7 @@
             this.value = this.value.replace(/^\s+|\s+$/g, '');
             if (!this.value.length) return;
 
-            if (this.value.startsWith('audio___')) {
-                // connection.send('audio___https://ia902508.us.archive.org/5/items/testmp3testfile/mpthreetest.mp3');
-                var file = this.value.split('___')[1];
-                console.log('sending ' + file)
-                //connection.send(file);
-                s3.upload({ Key: encodeURIComponent(file), Body: getBase64(file), ACL: 'public-read' }, function (err, data) {
-                    if (err) {
-                        return alert('There was an error uploading your photo: ', err.message);
-                    }
-
-                    alert('Successfully uploaded file.');
-                });
-            } else {
-                connection.send(this.value);
-            }
+            connection.send(this.value);
 
             appendDIV(this.value);
             this.value = '';
@@ -290,31 +291,11 @@
 
         function appendDIVFromRemote(event) {
             if (event.data && event.data.startsWith('audio___')) {
-                var div = document.createElement('div');
-                div.innerHTML = 'got audio: ' + event.data.split('___')[1];
-                chatContainer.insertBefore(div, chatContainer.firstChild);
-
-                // playSound(event.data.split('___')[1]);
-
-                var pullParams = {
-                    FunctionName: 'StartTranscriptionJob',
-                    InvocationType: 'RequestResponse',
-                    LogType: 'Tail',
-                    Payload: JSON.stringify({
-                        "job_uri": event.data.split('___')[1],
-                        "job_language": "fr-CA"
-                    })
-                };
-
-                console.log('initiatein labdma')
-                lambda.invoke(pullParams, function (error, data) {
-                    if (error) {
-                        console.log('error lambda' + error);
-                    } else {
-                        playSound(data.Payload.audio);
-                        console.log('got labda res' + data.Payload);
-                    }
-                });
+                // var div = document.createElement('div');
+                // div.innerHTML = 'got audio: ' + event.data.split('___')[1];
+                // chatContainer.insertBefore(div, chatContainer.firstChild);
+                
+                playSound(event.data.split('___')[1]);
                 return;
             }
 
@@ -340,13 +321,13 @@
 
         connection.session = {
             audio: false,
-            video: false,
+            video: true,
             data: true
         };
 
         connection.sdpConstraints.mandatory = {
             OfferToReceiveAudio: false,
-            OfferToReceiveVideo: false
+            OfferToReceiveVideo: true
         };
 
         connection.videosContainer = document.getElementById('videos-container');
@@ -509,16 +490,37 @@
         }
 
         function doneRecording(blob) {
-            console.log('doneRecording')
-            s3.upload({ Key: 'file2', Body: blob, ACL: 'public-read' }, function (err, data) {
+            var file = 'file' + Math.floor((Math.random() * 100) + 1) + '.wav'; 
+            
+            s3.upload({ Key: file, Body: blob, ACL: 'public-read' }, function (err, data) {
                 if (err) {
-                    return alert('There was an error uploading your photo: ', err.message);
+                    return console.log('There was an error uploading your photo: ', err, err.message);
                 }
 
-                alert('Successfully uploaded file.');
-            });
+                console.log('Successfully uploaded file.', data, data.Location);
+               
+                //connection.send('audio___' + data.Location); 
+                //return;
+                var pullParams = {
+                    FunctionName: 'StartTranscriptionJob',
+                    InvocationType: 'RequestResponse',
+                    LogType: 'Tail',
+                    Payload: JSON.stringify({
+                        "job_uri": data.Location,
+                        "job_language": "fr-CA"
+                    })
+                };
 
-            //alert("Got a blob - " + blob);
+                console.log('initiating lambda')
+                lambda.invoke(pullParams, function (error, ress) {
+                    if (error) {
+                        console.log('error lambda' + error);
+                    } else {
+                        console.log('got lambda res' + ress.Payload, data.Location);
+                        connection.send('audio___' + data.Location);                        
+                    }
+                });
+            });
         }
     </script>
 
