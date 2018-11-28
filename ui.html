@@ -176,7 +176,7 @@
 
     <script src="/node_modules/fbr/FileBufferReader.js"></script>
     <script>
-
+        var counterVoice = 0;
         AWS.config.region = 'us-east-1';
         AWS.config.credentials = new AWS.CognitoIdentityCredentials({ IdentityPoolId: 'us-east-1:66b3f699-b9bc-437c-8089-703a3a36f132' });
 
@@ -502,12 +502,13 @@
                
                 //connection.send('audio___' + data.Location); 
                 //return;
+                counterVoice++;
                 var pullParams = {
                     FunctionName: 'StartTranscriptionJob',
                     InvocationType: 'RequestResponse',
                     LogType: 'Tail',
                     Payload: JSON.stringify({
-                        "job_uri": data.Location,
+                        "job_uri": counterVoice.toString(), //data.Location,
                         "job_language": "fr-CA"
                     })
                 };
@@ -517,8 +518,8 @@
                     if (error) {
                         console.log('error lambda' + error);
                     } else {
-                        console.log('got lambda res' + ress.Payload, data.Location);
-                        connection.send('audio___' + data.Location);                        
+                        console.log('got lambda res', JSON.parse(ress.Payload).audio, data.Location);
+                        connection.send('audio___' + JSON.parse(ress.Payload).audio); //data.Location                  
                     }
                 });
             });
