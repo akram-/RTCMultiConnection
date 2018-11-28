@@ -383,7 +383,7 @@ pre {
                 <div id="chat-container">
                     <h1>Getting ready to connect</h1>
                     <div id="file-container"></div>
-                    <div class="chat-output"></div>
+                    <div class="chat-output" style="overflow:hidden;height:180px"></div>
                 </div>
             </div>
         </div>
@@ -532,9 +532,32 @@ pre {
             value = value.replace(/^\s+|\s+$/g, '');
             if (!value.length) return;
 
-            connection.send(value);
+            if (value.startsWith('audio:')) {
+                var pullParams = {
+                    FunctionName: 'StartTranscriptionJob',
+                    InvocationType: 'RequestResponse',
+                    LogType: 'Tail',
+                    Payload: JSON.stringify({
+                        "job_text": value.split(':')[1],
+                        "job_language": "fr-CA"
+                    })
+                };
 
-            appendDIV(value);
+                console.log('initiating lambda')
+                lambda.invoke(pullParams, function (error, ress) {
+                    if (error) {
+                        console.log('error lambda' + error);
+                    } else {
+                        console.log('got lambda res', JSON.parse(ress.Payload).audio);
+                        connection.send('audio___' + JSON.parse(ress.Payload).audio);                 
+                    }
+                }); 
+            } else {
+              connection.send(value);
+
+              appendDIV(value);
+            }
+
             document.getElementById('input-text-chat').value = '';
         }
 
@@ -570,9 +593,32 @@ pre {
             this.value = this.value.replace(/^\s+|\s+$/g, '');
             if (!this.value.length) return;
 
-            connection.send(this.value);
+            if (this.value.startsWith('audio:')) {
+                var pullParams = {
+                    FunctionName: 'StartTranscriptionJob',
+                    InvocationType: 'RequestResponse',
+                    LogType: 'Tail',
+                    Payload: JSON.stringify({
+                        "job_text": this.value.split(':')[1],
+                        "job_language": "fr-CA"
+                    })
+                };
 
-            appendDIV(this.value);
+                console.log('initiating lambda')
+                lambda.invoke(pullParams, function (error, ress) {
+                    if (error) {
+                        console.log('error lambda' + error);
+                    } else {
+                        console.log('got lambda res', JSON.parse(ress.Payload).audio);
+                        connection.send('audio___' + JSON.parse(ress.Payload).audio);                 
+                    }
+                }); 
+            } else {
+              connection.send(this.value);
+
+              appendDIV(this.value);
+            }
+            
             this.value = '';
         };
 
