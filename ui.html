@@ -405,7 +405,9 @@ pre {
             <div class="col-xs-3">
                 <button class="btn" id="share-file" disabled>Share File</button>
 
-                <button class="btn" id="btn-leave-room" disabled>Leave /or close the room</button>
+                <button class="btn" id="btn-leave-room" disabled>Close Connection</button>
+                
+                <button class="btn" id="btn-hide-video" onclick="toggleVideo()">Toggle Video</button>
 
                 <div id="room-urls" style="text-align: center;display: none;background: #F1EDED;margin: 15px -10px;border: 1px solid rgb(189, 189, 189);border-left: 0;border-right: 0;"></div>
 
@@ -433,8 +435,12 @@ pre {
     <script src="/dev/getHTMLMediaElement.js"></script>
 
     <script src="/node_modules/fbr/FileBufferReader.js"></script>
-    <script>
-	<!-- Welcome Language -->
+    <script type="text/javascript">
+
+        function toggleVideo() {
+            $('#videos-container').toggleClass("hidden");
+
+        }
 		var language = window.navigator.userLanguage || window.navigator.language;
 		var welcomeMessage = "Let's Connect and Talk"
 		
@@ -827,6 +833,8 @@ pre {
                 });
             });
         }
+
+       
 		
 		
     </script>
