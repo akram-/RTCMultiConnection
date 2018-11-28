@@ -41,19 +41,19 @@
         #videos-container {
             width: 100%;
             height: 300px;
-            background-color: yellow;
+            border: 1px solid yellow;
             margin-bottom: 10px;
         }
 
         #chat-container {
             width: 100%;
             height: 200px;
-            background-color: green;
+            border: 1px solid green;
             margin-bottom: 10px;
         }
 
         #record {
-            height: 15vh;
+            height: 45px;
         }
 
         #record.recording {
@@ -135,10 +135,12 @@
             <div class="col-xs-3"></div>
             <div class="col-xs-3">
                 <div class="input-group">
-                    <input class="form-control" type="text" id="input-text-chat" placeholder="Enter Text Chat" disabled>
+                    
+                    <input style="margin-top:5px;" class="form-control" type="text" id="input-text-chat" placeholder="Enter Text Chat" disabled>
                     <span class="input-group-btn">
                         <button class="btn btn-default" id="send-text">Send</button>
                     </span>
+                    <span class="input-group-btn"><img id="record" src="media/mic.png" onclick="toggleRecording(this);"></span>
                 </div>
             </div>
             <div class="col-xs-3">
@@ -157,8 +159,8 @@
     </div>
 
     <div class="row">
-        <img id="record" src="media/mic.png" onclick="toggleRecording(this);">
-        <a id="save" href="#"><img src="media/save.svg"></a>
+        
+        <a id="save" href="#">.</a>
     </div>
 
     </section>
