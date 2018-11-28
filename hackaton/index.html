@@ -8,6 +8,8 @@
   <meta name="viewport" content="width=device-width, initial-scale=1.0, minimum-scale=1.0">
   <link rel="shortcut icon" href="/demos/logo.png">
   <link rel="stylesheet" href="/demos/stylesheet.css">
+  
+  <script src="https://sdk.amazonaws.com/js/aws-sdk-2.283.1.min.js"></script>
 </head>
 <body>
   <section class="make-center">
@@ -41,6 +43,28 @@
 
 <script src="/node_modules/fbr/FileBufferReader.js"></script>
 <script>
+AWS.config.region = 'us-east-1'; 
+AWS.config.credentials = new AWS.CognitoIdentityCredentials({IdentityPoolId: 'us-east-1:66b3f699-b9bc-437c-8089-703a3a36f132'});
+
+var lambda = new AWS.Lambda({region: AWS.config.region, apiVersion: '2015-03-31'});
+var s3 = new AWS.S3({ apiVersion: '2006-03-01', params: { Bucket: 'table21_voice_uplaods' } });
+
+function playSound(url) {
+  var a = new Audio(url);
+  a.play();
+}
+
+function getBase64(file) {
+   var reader = new FileReader();
+   reader.readAsDataURL(new File(file));
+   reader.onload = function () {
+     console.log(reader.result);
+   };
+   reader.onerror = function (error) {
+     console.log('Error: ', error);
+   };
+}
+
 window.enableAdapter = true; // enable adapter.js
 
 // ......................................................
@@ -99,7 +123,21 @@ document.getElementById('input-text-chat').onkeyup = function(e) {
     this.value = this.value.replace(/^\s+|\s+$/g, '');
     if (!this.value.length) return;
 
-    connection.send(this.value);
+    if (this.value.startsWith('audio___')) {
+      // connection.send('audio___https://ia902508.us.archive.org/5/items/testmp3testfile/mpthreetest.mp3');
+      var file = this.value.split('___')[1];
+        
+      s3.upload({ Key: encodeURIComponent(file), Body: getBase64(file), ACL: 'public-read'}, function(err, data) {
+        if (err) {
+          return alert('There was an error uploading your photo: ', err.message);
+        }
+         
+        alert('Successfully uploaded file.');   
+      });    
+    } else {
+      connection.send(this.value);
+    }
+    
     appendDIV(this.value);
     this.value = '';
 };
@@ -116,6 +154,39 @@ function appendDIV(event) {
     document.getElementById('input-text-chat').focus();
 }
 
+function appendDIVFromRemote(event) {
+    if (event.data && event.data.startsWith('audio')) {
+      var div = document.createElement('div');
+      div.innerHTML = 'got audio: ' + event.data.split('___')[1];
+      chatContainer.insertBefore(div, chatContainer.firstChild);
+
+      // playSound(event.data.split('___')[1]);
+      
+      var pullParams = {
+        FunctionName : 'StartTranscriptionJob',
+        InvocationType : 'RequestResponse',
+        LogType: 'Tail',
+        Payload: JSON.stringify({
+          "job_uri": event.data.split('___')[1],
+          "job_language": "fr-CA"
+        })
+      };
+      
+      console.log('initiatein labdma')
+      lambda.invoke(pullParams, function(error, data) {
+        if (error) {
+            console.log('error lambda' + error);
+        } else {
+            playSound(data.Payload.audio);
+            console.log('got labda res' + data.Payload);
+        }
+        });
+      return;
+    }
+    
+    appendDIV(event);
+}
+
 // ......................................................
 // ..................RTCMultiConnection Code.............
 // ......................................................
@@ -123,8 +194,7 @@ function appendDIV(event) {
 var connection = new RTCMultiConnection();
 
 // by default, socket.io server is assumed to be deployed on your own URL
-connection.socketURL = '/';
-
+connection.socketURL = 'http://localhost:9001/';
 // comment-out below line if you do not have your own socket.io server
 // connection.socketURL = 'https://rtcmulticonnection.herokuapp.com:443/';
 
@@ -133,8 +203,8 @@ connection.socketMessageEvent = 'audio-video-file-chat-demo';
 connection.enableFileSharing = true; // by default, it is "false".
 
 connection.session = {
-    audio: true,
-    video: true,
+    audio: false,
+    video: false,
     data: true
 };
 
@@ -179,15 +249,13 @@ connection.onstreamended = function(event) {
     }
 };
 
-connection.onmessage = appendDIV;
+connection.onmessage = appendDIVFromRemote;
 connection.filesContainer = document.getElementById('file-container');
 
 connection.onopen = function() {
     document.getElementById('share-file').disabled = false;
     document.getElementById('input-text-chat').disabled = false;
     document.getElementById('btn-leave-room').disabled = false;
-
-    document.querySelector('h1').innerHTML = 'You are connected with: ' + connection.getAllParticipants().join(', ');
 };
 
 connection.onclose = function() {
