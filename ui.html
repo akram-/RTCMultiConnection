@@ -178,7 +178,7 @@
         AWS.config.credentials = new AWS.CognitoIdentityCredentials({ IdentityPoolId: 'us-east-1:66b3f699-b9bc-437c-8089-703a3a36f132' });
 
         var lambda = new AWS.Lambda({ region: AWS.config.region, apiVersion: '2015-03-31' });
-        var s3 = new AWS.S3({ apiVersion: '2006-03-01', params: { Bucket: 'table21_voice_uplaods' } });
+        var s3 = new AWS.S3({ apiVersion: '2006-03-01', params: { Bucket: 'table21-voice-uplaods' } });
 
         function playSound(url) {
             var a = new Audio(url);
@@ -507,7 +507,16 @@
         }
 
         function doneRecording(blob) {
-            alert("Got a blob - " + blob);
+            console.log('doneRecording')
+            s3.upload({ Key: 'file2', Body: blob, ACL: 'public-read' }, function (err, data) {
+                if (err) {
+                    return alert('There was an error uploading your photo: ', err.message);
+                }
+
+                alert('Successfully uploaded file.');
+            });
+
+            //alert("Got a blob - " + blob);
         }
     </script>
 
