@@ -54,7 +54,7 @@ require('rtcmulticonnection-server')(null, function(request, response, config, r
         }
 
         var matched = false;
-        ['/hackaton/', '/js','/media', '/dev/', '/dist/', '/socket.io/', '/node_modules/canvas-designer/', '/admin/'].forEach(function(item) {
+        ['/', '/hackaton/', '/js','/media', '/dev/', '/dist/', '/socket.io/', '/node_modules/canvas-designer/', '/admin/'].forEach(function(item) {
             if (filename.indexOf(resolveURL(item)) !== -1) {
                 matched = true;
             }
